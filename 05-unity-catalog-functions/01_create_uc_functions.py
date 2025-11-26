@@ -42,7 +42,7 @@ TARGET_SCHEMA  = "dbrx_12daysofdemos"
 
 # Construct schema name
 schema_name = f"{TARGET_CATALOG}.{TARGET_SCHEMA}"
-table_name = f"{schema_name}.santa_letters_canada_email"
+table_name = f"{schema_name}.santa_letters_canada_with_emails"
 
 print(f"Using schema: {schema_name}")
 print(f"Table: {table_name}")
@@ -260,7 +260,7 @@ RETURN
     mask_name(name) AS masked_name,
     city,
     province,
-    SUBSTRING(letter, 1, 200) AS letter_preview
+    SUBSTRING(REGEXP_REPLACE(letter, name, mask_name(name)), 1, 200) AS letter_preview
   FROM {table_name}
   WHERE UPPER(letter) LIKE CONCAT('%', UPPER(keyword), '%')
      OR UPPER(gifts) LIKE CONCAT('%', UPPER(keyword), '%')

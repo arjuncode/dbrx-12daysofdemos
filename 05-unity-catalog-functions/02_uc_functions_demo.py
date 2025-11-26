@@ -28,7 +28,7 @@ TARGET_SCHEMA  = "dbrx_12daysofdemos"
 
 # Construct names
 schema_name = f"{TARGET_CATALOG}.{TARGET_SCHEMA}"
-table_name = f"{schema_name}.santa_letters_canada_email"
+table_name = f"{schema_name}.santa_letters_canada_with_emails"
 
 print(f"Using schema: {schema_name}")
 print(f"Table: {table_name}")

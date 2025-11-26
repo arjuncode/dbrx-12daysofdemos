@@ -69,7 +69,7 @@ The **North Pole Modernization Office (NPMO)** processes millions of children's 
 2. **Run `00-init/load-data.ipynb`** to:
    - Create the Unity Catalog schema and volume
    - Download and load `santa_letters_canada_with_emails.csv`
-   - Create table: `main.dbrx_12daysofdemos.santa_letters_canada_email`
+   - Create table: `main.dbrx_12daysofdemos.santa_letters_canada_with_emails`
 
 ### Run the Notebooks (in order)
 
