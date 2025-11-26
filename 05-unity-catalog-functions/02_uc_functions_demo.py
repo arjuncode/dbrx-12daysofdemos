@@ -70,7 +70,7 @@ SELECT
   {schema_name}.mask_email(email) AS masked_email,
   city,
   province,
-  SUBSTRING(letter, 1, 100) AS letter_preview,
+  SUBSTRING(REGEXP_REPLACE(letter, name, {schema_name}.mask_name(name)), 1, 100) AS letter_preview,
   gifts
 FROM {table_name}
 LIMIT 10
@@ -179,7 +179,7 @@ SELECT
   {schema_name}.mask_email(email) AS masked_email,
   city,
   province,
-  letter,
+  REGEXP_REPLACE(letter, name, {schema_name}.mask_name(name)) AS letter,
   gifts
 FROM {table_name}
 """)
