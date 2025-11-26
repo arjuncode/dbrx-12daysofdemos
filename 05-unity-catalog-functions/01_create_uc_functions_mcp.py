@@ -42,7 +42,7 @@ TARGET_SCHEMA  = "dbrx_12daysofdemos"
 
 # Construct schema name
 schema_name = f"{TARGET_CATALOG}.{TARGET_SCHEMA}"
-table_name = f"{schema_name}.santa_letters"
+table_name = f"{schema_name}.santa_letters_canada_email"
 
 print(f"Using schema: {schema_name}")
 print(f"Table: {table_name}")
@@ -113,12 +113,11 @@ RETURN
 
 # COMMAND ----------
 
-spark.sql("""
-SELECT
-  mask_email('santa@northpole.com') AS masked_santa,
-  mask_email('emma.wilson@gmail.com') AS masked_emma,
-  mask_email('invalid-email') AS invalid_test
-""").show()
+# MAGIC %sql
+# MAGIC SELECT
+# MAGIC   mask_email('santa@northpole.com') AS masked_santa,
+# MAGIC   mask_email('emma.wilson@gmail.com') AS masked_emma,
+# MAGIC   mask_email('invalid-email') AS invalid_test;
 
 # COMMAND ----------
 
@@ -163,12 +162,11 @@ RETURN
 
 # COMMAND ----------
 
-spark.sql("""
-SELECT
-  mask_name('Emma') AS masked_emma,
-  mask_name('Alexander') AS masked_alexander,
-  mask_name('Jo') AS masked_short_name
-""").show()
+# MAGIC %sql
+# MAGIC SELECT
+# MAGIC   mask_name('Emma') AS masked_emma,
+# MAGIC   mask_name('Alexander') AS masked_alexander,
+# MAGIC   mask_name('Jo') AS masked_short_name;
 
 # COMMAND ----------
 
@@ -219,11 +217,13 @@ RETURN (
 
 # COMMAND ----------
 
-spark.sql("SELECT get_province_summary('Ontario') AS ontario_summary").show(truncate=False)
+# MAGIC %sql
+# MAGIC SELECT get_province_summary('Ontario') AS ontario_summary;
 
 # COMMAND ----------
 
-spark.sql("SELECT get_province_summary('Quebec') AS quebec_summary").show(truncate=False)
+# MAGIC %sql
+# MAGIC SELECT get_province_summary('Quebec') AS quebec_summary;
 
 # COMMAND ----------
 
@@ -274,11 +274,13 @@ RETURN
 
 # COMMAND ----------
 
-spark.sql("SELECT * FROM search_letters('bicycle')").show(truncate=False)
+# MAGIC %sql
+# MAGIC SELECT * FROM search_letters('bicycle');
 
 # COMMAND ----------
 
-spark.sql("SELECT * FROM search_letters('lego')").show(truncate=False)
+# MAGIC %sql
+# MAGIC SELECT * FROM search_letters('lego');
 
 # COMMAND ----------
 
@@ -287,7 +289,8 @@ spark.sql("SELECT * FROM search_letters('lego')").show(truncate=False)
 
 # COMMAND ----------
 
-spark.sql("SHOW USER FUNCTIONS").show(truncate=False)
+# MAGIC %sql
+# MAGIC SHOW USER FUNCTIONS;
 
 # COMMAND ----------
 

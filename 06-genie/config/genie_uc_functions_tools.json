@@ -1,0 +1,126 @@
+{
+  "genie_space_name": "North Pole Operations Center",
+  "description": "AI-powered intelligence layer for Santa's letter processing and delivery operations",
+  "tools": [
+    {
+      "type": "uc_function",
+      "catalog": "danny_park",
+      "schema": "day5_uc_functions",
+      "function_name": "clean_text",
+      "description": "Cleans raw text by removing excess whitespace, special characters, and normalizing format. Use this when analyzing or displaying letter content."
+    },
+    {
+      "type": "uc_function",
+      "catalog": "danny_park",
+      "schema": "day5_uc_functions",
+      "function_name": "normalize_province",
+      "description": "Normalizes Canadian province abbreviations and misspellings to full province names. Use when searching or filtering by province."
+    },
+    {
+      "type": "uc_function",
+      "catalog": "danny_park",
+      "schema": "day5_uc_functions",
+      "function_name": "normalize_city",
+      "description": "Normalizes common city name misspellings and variations. Use when searching or filtering by city."
+    },
+    {
+      "type": "uc_function",
+      "catalog": "danny_park",
+      "schema": "day5_uc_functions",
+      "function_name": "standardize_gift",
+      "description": "Standardizes gift names to canonical product names (e.g., 'PS5' → 'PlayStation 5'). Use when analyzing or comparing gift requests."
+    },
+    {
+      "type": "uc_function",
+      "catalog": "danny_park",
+      "schema": "day5_uc_functions",
+      "function_name": "gift_category",
+      "description": "Categorizes gift names into standardized product categories (Gaming Consoles, Electronics, Toys, etc.). Use for trend analysis and supply planning."
+    },
+    {
+      "type": "uc_function",
+      "catalog": "danny_park",
+      "schema": "day5_uc_functions",
+      "function_name": "naughty_nice_score",
+      "description": "Scores letters from 0-100 based on politeness, gratitude, and kindness indicators. Higher scores = nicer children. Use for behavior analysis and prioritization."
+    },
+    {
+      "type": "uc_function",
+      "catalog": "danny_park",
+      "schema": "day5_uc_functions",
+      "function_name": "delivery_priority_score",
+      "description": "Calculates delivery priority (1=High, 2=Medium, 3=Low) based on letter urgency and nice score. Use for logistics and delivery planning."
+    },
+    {
+      "type": "uc_function",
+      "catalog": "danny_park",
+      "schema": "day5_uc_functions",
+      "function_name": "extract_gift_count",
+      "description": "Extracts count of gifts from comma or 'and' separated list. Use to understand request volume per child."
+    },
+    {
+      "type": "uc_function",
+      "catalog": "danny_park",
+      "schema": "day5_uc_functions",
+      "function_name": "extract_first_gift",
+      "description": "Extracts the first gift mentioned from a comma or 'and' separated list. Use to identify primary gift request."
+    },
+    {
+      "type": "uc_function",
+      "catalog": "danny_park",
+      "schema": "day5_uc_functions",
+      "function_name": "is_valid_postal_code",
+      "description": "Validates Canadian postal code format (A1A 1A1). Use for data quality checks and address validation."
+    },
+    {
+      "type": "uc_function",
+      "catalog": "danny_park",
+      "schema": "day5_uc_functions",
+      "function_name": "age_category",
+      "description": "Categorizes children into age groups (Toddler, Child, Preteen, Teen). Use for age-based analysis and gift recommendations."
+    }
+  ],
+  "context_tables": [
+    {
+      "catalog": "danny_park",
+      "schema": "silver",
+      "table": "santa_letters_cleaned",
+      "description": "Cleaned and enriched Santa letters with standardized locations, gifts, sentiment scores, and delivery priorities",
+      "key_columns": [
+        "name",
+        "province_normalized",
+        "city_normalized",
+        "primary_gift_standardized",
+        "gift_category",
+        "naughty_nice_score",
+        "delivery_priority",
+        "letter_clean"
+      ]
+    },
+    {
+      "catalog": "danny_park",
+      "schema": "silver",
+      "table": "santa_letters_summary",
+      "description": "Summary statistics view with overall metrics about letters, gifts, behavior, and priorities",
+      "key_columns": [
+        "total_letters",
+        "unique_children",
+        "provinces_covered",
+        "avg_nice_score",
+        "high_priority_count"
+      ]
+    }
+  ],
+  "suggested_queries": [
+    "Which children in Toronto asked for gaming consoles?",
+    "Show me high-priority letters from very nice children (score >= 75)",
+    "What are the top 5 gift categories by demand in Quebec?",
+    "Find all letters that mention urgent or emergency requests",
+    "What's the average nice score by province?",
+    "List the most requested specific gifts across all letters",
+    "Which cities have the highest concentration of high-priority deliveries?",
+    "Show me children who asked for multiple gifts (3+) and have high nice scores",
+    "What percentage of letters are from naughty vs nice children?",
+    "Generate a supply requirement forecast for the top 10 gift categories"
+  ]
+}

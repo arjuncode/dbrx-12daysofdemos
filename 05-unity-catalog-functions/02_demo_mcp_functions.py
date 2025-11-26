@@ -28,7 +28,7 @@ TARGET_SCHEMA  = "dbrx_12daysofdemos"
 
 # Construct names
 schema_name = f"{TARGET_CATALOG}.{TARGET_SCHEMA}"
-table_name = f"{schema_name}.santa_letters"
+table_name = f"{schema_name}.santa_letters_canada_email"
 
 print(f"Using schema: {schema_name}")
 print(f"Table: {table_name}")
@@ -128,7 +128,7 @@ SELECT
 
 # COMMAND ----------
 
-spark.sql(f"SELECT * FROM TABLE({schema_name}.search_letters('bicycle'))").display()
+spark.sql(f"SELECT * FROM {schema_name}.search_letters('bicycle')").display()
 
 # COMMAND ----------
 
@@ -137,7 +137,7 @@ spark.sql(f"SELECT * FROM TABLE({schema_name}.search_letters('bicycle'))").displ
 
 # COMMAND ----------
 
-spark.sql(f"SELECT * FROM TABLE({schema_name}.search_letters('LEGO'))").display()
+spark.sql(f"SELECT * FROM {schema_name}.search_letters('LEGO')").display()
 
 # COMMAND ----------
 
@@ -146,7 +146,7 @@ spark.sql(f"SELECT * FROM TABLE({schema_name}.search_letters('LEGO'))").display(
 
 # COMMAND ----------
 
-spark.sql(f"SELECT * FROM TABLE({schema_name}.search_letters('PlayStation'))").display()
+spark.sql(f"SELECT * FROM {schema_name}.search_letters('PlayStation')").display()
 
 # COMMAND ----------
 

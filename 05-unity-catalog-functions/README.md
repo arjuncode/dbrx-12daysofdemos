@@ -12,22 +12,23 @@ The **North Pole Modernization Office (NPMO)** processes millions of children's 
 
 ### The Problem
 - **PII everywhere:** Child names, emails, addresses in raw data
-- **Repeated logic:** Same masking/aggregation code copied everywhere
-- **No governance:** Can't track who accessed what data
-- **Unsafe for AI:** Can't share data with AI agents without PII exposure
+- **Repeated logic:** Same masking/aggregation code copied across notebooks and dashboards
+- **No governance:** Can't track who accessed what data or how functions are used
+- **Inconsistent security:** Different teams implement masking differently
 
 ### The Old Way
 - Copy-paste masking logic across notebooks
 - Manual data anonymization before sharing
 - No lineage tracking
 - Different logic in each application
+- No reusability across SQL, Python, and BI tools
 
 ### The New Way (Unity Catalog Functions)
-- ✅ **Reusable functions** with built-in governance
-- ✅ **Automatic PII masking** embedded in functions
+- ✅ **Reusable functions** callable from SQL, Python, and BI dashboards
+- ✅ **Automatic PII masking** embedded in function definitions
 - ✅ **Lineage tracking** via Unity Catalog
 - ✅ **One source of truth** for business logic
-- ✅ **Safe for AI agents** - governed access patterns
+- ✅ **Governed access** with Unity Catalog permissions
 
 ---
 
@@ -39,8 +40,8 @@ The **North Pole Modernization Office (NPMO)** processes millions of children's 
 |----------|------|---------|----------|
 | `mask_email()` | Scalar | Mask email addresses | PII protection, GDPR compliance |
 | `mask_name()` | Scalar | Anonymize personal names | Child privacy, safe demos |
-| `get_province_summary()` | Scalar (JSON) | Aggregate letter stats | AI agent queries, analytics |
-| `search_letters()` | Table-valued | Search with auto-masking | Safe search, governed access |
+| `get_province_summary()` | Scalar (JSON) | Aggregate letter stats | Dashboard analytics, API responses |
+| `search_letters()` | Table-valued | Search with auto-masking | Safe search, governed data access |
 
 ---
 
@@ -51,36 +52,41 @@ The **North Pole Modernization Office (NPMO)** processes millions of children's 
 | `data/santa_letters_canada_with_emails.csv` | 5,000 Canadian Santa letters with emails |
 | `data/add_emails_to_dataset.py` | Script to add email addresses to dataset |
 | `00_load_synthetic_data.py` | Load CSV into Unity Catalog |
-| `01_create_uc_functions_mcp.py` | Create 4 UC Functions |
-| `02_demo_mcp_functions.py` | Demo functions in action |
+| `01_create_uc_functions_mcp.py` | Create 4 Unity Catalog Functions |
+| `02_demo_mcp_functions.py` | Demo functions with real queries |
 | `README.md` | This file - complete documentation |
 
 ---
 
 ## 🚀 Quick Start
 
-### Step 1: Prepare & Load Data
+### Prerequisites
 
-The dataset is ready with 5,000 Canadian Santa letters including email addresses!
+1. **Configure your catalog and schema** in `00-init/load-data.ipynb`:
+   ```python
+   TARGET_CATALOG = "main"
+   TARGET_SCHEMA  = "dbrx_12daysofdemos"
+   TARGET_VOLUME  = "raw_data_volume"
+   ```
 
-**Upload** `santa_letters_canada_with_emails.csv` to Databricks:
-- Recommended path: `/Volumes/danny_park/day5_uc_functions/data/`
+2. **Run `00-init/load-data.ipynb`** to:
+   - Create the Unity Catalog schema and volume
+   - Download and load `santa_letters_canada_with_emails.csv`
+   - Create table: `main.dbrx_12daysofdemos.santa_letters_canada_email`
 
-### Step 2: Run the Notebooks
-
-**In order:**
+### Run the Notebooks (in order)
 
 1. **`00_load_synthetic_data.py`**
-   - Loads CSV into `danny_park.day5_uc_functions.santa_letters`
-   - Verifies data quality
+   - Verifies the data is loaded correctly
+   - Shows data quality metrics
 
 2. **`01_create_uc_functions_mcp.py`**
-   - Creates 4 UC Functions in `danny_park.day5_uc_functions`
-   - Tests each function
+   - Creates 4 Unity Catalog Functions
+   - Tests each function with sample queries
 
 3. **`02_demo_mcp_functions.py`**
-   - Demonstrates functions in real scenarios
-   - Shows before/after PII masking
+   - Demonstrates functions with real queries
+   - Shows PII masking in action
    - Creates governed views
 
 ---
@@ -182,7 +188,7 @@ SELECT mask_email('santa@northpole.com');
 - GDPR compliance
 - Safe demos and screenshots
 - Sharing data with third parties
-- AI agent access
+- Protecting PII in analytics dashboards
 
 ---
 
@@ -231,10 +237,10 @@ SELECT get_province_summary('Ontario');
 ```
 
 **Use Cases:**
-- AI agent queries ("How many letters from Ontario?")
-- Dashboard summaries
-- API responses
+- Dashboard summaries and widgets
+- API responses for applications
 - Analytics aggregation
+- Standardized reporting across teams
 
 ---
 
@@ -255,53 +261,10 @@ SELECT * FROM TABLE(search_letters('bicycle'));
 ```
 
 **Use Cases:**
-- Safe search for AI agents
-- Compliance-safe exploration
+- Compliance-safe data exploration
 - Keyword analysis without PII exposure
-
----
-
-## 🎯 Demo Flow (15 minutes)
-
-### Part 1: The Problem (3 min)
-
-**Show raw data:**
-```sql
-SELECT name, email, city, letter FROM santa_letters LIMIT 5;
-```
-
-**Point out:** "Look at all this PII - names, emails, locations. Can't safely share this with AI or external systems."
-
-### Part 2: Create UC Functions (5 min)
-
-**Run:** `01_create_uc_functions_mcp.py`
-
-**Highlight key moments:**
-1. **Scalar functions** - Simple masking logic
-2. **Table-valued function** - Returns entire result sets
-3. **JSON function** - Structured output for APIs/AI
-
-**Key message:** "These functions are now governed assets in Unity Catalog - reusable everywhere."
-
-### Part 3: Functions in Action (5 min)
-
-**Run:** `02_demo_mcp_functions.py`
-
-**Show:**
-1. **Before/after** - Raw data vs masked data
-2. **Search function** - Automatic masking in results
-3. **Aggregation** - JSON output for consumption
-
-**Key message:** "Same functions work in SQL, Python, dashboards, and eventually AI agents."
-
-### Part 4: Governance Benefits (2 min)
-
-**Show in Unity Catalog:**
-- Function definitions
-- Lineage tracking
-- Access control options
-
-**Key message:** "Unity Catalog tracks every function call - full governance and auditability."
+- Building governed search interfaces
+- Safe ad-hoc querying across teams
 
 ---
 
@@ -316,7 +279,7 @@ SELECT name, email, city, letter FROM santa_letters LIMIT 5;
 | No lineage tracking | Full UC governance |
 | Manual security | Security by design |
 | Hard to maintain | Update once, applies globally |
-| Not AI-ready | Ready for AI agent consumption |
+| Siloed per tool | Works across SQL, Python, BI |
 
 ### The Power of Governed Functions
 
@@ -324,7 +287,7 @@ SELECT name, email, city, letter FROM santa_letters LIMIT 5;
    - Use in SQL queries
    - Call from Python notebooks
    - Embed in BI dashboards
-   - Expose to AI agents (future: MCP)
+   - Share across teams and workspaces
 
 2. **Governance**
    - Unity Catalog tracks all usage
@@ -374,25 +337,24 @@ SELECT name, email, city, letter FROM santa_letters LIMIT 5;
 
 ## 🔜 What's Next
 
-### Day 6/7: Genie Space (Future)
+### Extending UC Functions
 
-These UC Functions will eventually power AI agents:
+These patterns can be extended for more advanced use cases:
 
-**Scenario:** User asks Genie Space, *"How many letters from Ontario?"*
+**Additional Masking Functions:**
+- `mask_phone_number()` - Protect phone numbers
+- `mask_address()` - Anonymize street addresses
+- `redact_sensitive_text()` - Remove sensitive keywords
 
-**Genie automatically:**
-1. Calls `get_province_summary('Ontario')`
-2. Parses JSON response
-3. Answers: "247 letters from 15 cities in Ontario"
+**Advanced Analytics:**
+- `get_trend_analysis()` - Time-series aggregations
+- `calculate_statistics()` - Complex statistical computations
+- `detect_anomalies()` - Built-in outlier detection
 
-**Scenario:** User asks, *"Show me kids who asked for LEGO"*
-
-**Genie automatically:**
-1. Calls `search_letters('LEGO')`
-2. Gets results with masked names
-3. Shows safe, anonymized results
-
-**The magic:** Same UC Functions used by humans and AI - all governed!
+**Cross-Domain Applications:**
+- Build a library of reusable functions for your organization
+- Share functions across different data products
+- Create standardized governance patterns
 
 ---
 

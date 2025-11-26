@@ -110,7 +110,7 @@ print(f"✓ Schema ready: {schema_name}")
 # COMMAND ----------
 
 # Write to Delta table
-table_name = f"{schema_name}.santa_letters"
+table_name = f"{schema_name}.santa_letters_canada_email"
 
 df.write \
     .mode("overwrite") \
@@ -188,7 +188,7 @@ LIMIT 15
 # MAGIC %md
 # MAGIC ## ✅ Data Loaded Successfully!
 # MAGIC
-# MAGIC The table `danny_park.day5_uc_functions.santa_letters` is ready.
+# MAGIC The table is ready with the configured catalog and schema.
 # MAGIC
 # MAGIC ### What's in the Data?
 # MAGIC - ✅ **5,000 Canadian Santa letters** from children across all provinces
