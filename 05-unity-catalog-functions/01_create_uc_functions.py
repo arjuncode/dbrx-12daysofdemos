@@ -13,7 +13,7 @@
 # MAGIC - ✅ **Secure** with built-in data masking and PII protection
 # MAGIC
 # MAGIC ### Prerequisites
-# MAGIC - Run `00_load_synthetic_data.py` first to load the santa_letters table
+# MAGIC - Run `00-init/load-data.ipynb` first to load the santa_letters_canada_email table
 # MAGIC
 # MAGIC ### What We'll Build
 # MAGIC

@@ -49,11 +49,8 @@ The **North Pole Modernization Office (NPMO)** processes millions of children's 
 
 | File | Description |
 |------|-------------|
-| `data/santa_letters_canada_with_emails.csv` | 5,000 Canadian Santa letters with emails |
-| `data/add_emails_to_dataset.py` | Script to add email addresses to dataset |
-| `00_load_synthetic_data.py` | Load CSV into Unity Catalog |
-| `01_create_uc_functions_mcp.py` | Create 4 Unity Catalog Functions |
-| `02_demo_mcp_functions.py` | Demo functions with real queries |
+| `01_create_uc_functions.py` | Create 4 Unity Catalog Functions |
+| `02_uc_functions_demo.py` | Demo functions with real queries |
 | `README.md` | This file - complete documentation |
 
 ---
@@ -76,15 +73,11 @@ The **North Pole Modernization Office (NPMO)** processes millions of children's 
 
 ### Run the Notebooks (in order)
 
-1. **`00_load_synthetic_data.py`**
-   - Verifies the data is loaded correctly
-   - Shows data quality metrics
-
-2. **`01_create_uc_functions_mcp.py`**
+1. **`01_create_uc_functions.py`**
    - Creates 4 Unity Catalog Functions
    - Tests each function with sample queries
 
-3. **`02_demo_mcp_functions.py`**
+2. **`02_uc_functions_demo.py`**
    - Demonstrates functions with real queries
    - Shows PII masking in action
    - Creates governed views

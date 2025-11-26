@@ -10,8 +10,8 @@
 # MAGIC - **Reusable logic** across all platforms
 # MAGIC
 # MAGIC ### Prerequisites
-# MAGIC - Run `00_load_synthetic_data.py` to load data
-# MAGIC - Run `01_create_uc_functions_mcp.py` to create functions
+# MAGIC - Run `00-init/load-data.ipynb` to load data
+# MAGIC - Run `01_create_uc_functions.py` to create functions
 # MAGIC
 # MAGIC ---
 
