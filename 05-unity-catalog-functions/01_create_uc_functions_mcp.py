@@ -82,28 +82,29 @@ print(f"✓ Using schema: {schema_name}")
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC CREATE OR REPLACE FUNCTION mask_email(email STRING)
-# MAGIC RETURNS STRING
-# MAGIC COMMENT 'Masks email addresses for PII protection - exposes first/last char of username and domain'
-# MAGIC RETURN
-# MAGIC   CASE
-# MAGIC     WHEN email IS NULL OR email = '' THEN NULL
-# MAGIC     WHEN INSTR(email, '@') = 0 THEN '***INVALID_EMAIL***'
-# MAGIC     ELSE CONCAT(
-# MAGIC       -- First char of username
-# MAGIC       SUBSTRING(SPLIT(email, '@')[0], 1, 1),
-# MAGIC       '***',
-# MAGIC       -- Last char of username
-# MAGIC       SUBSTRING(SPLIT(email, '@')[0], LENGTH(SPLIT(email, '@')[0]), 1),
-# MAGIC       '@',
-# MAGIC       -- First char of domain
-# MAGIC       SUBSTRING(SPLIT(email, '@')[1], 1, 1),
-# MAGIC       REPEAT('*', GREATEST(LENGTH(SPLIT(email, '@')[1]) - 6, 1)),
-# MAGIC       -- Last 5 chars of domain (e.g., ".com")
-# MAGIC       SUBSTRING(SPLIT(email, '@')[1], -5)
-# MAGIC     )
-# MAGIC   END;
+spark.sql("""
+CREATE OR REPLACE FUNCTION mask_email(email STRING)
+RETURNS STRING
+COMMENT 'Masks email addresses for PII protection - exposes first/last char of username and domain'
+RETURN
+  CASE
+    WHEN email IS NULL OR email = '' THEN NULL
+    WHEN INSTR(email, '@') = 0 THEN '***INVALID_EMAIL***'
+    ELSE CONCAT(
+      -- First char of username
+      SUBSTRING(SPLIT(email, '@')[0], 1, 1),
+      '***',
+      -- Last char of username
+      SUBSTRING(SPLIT(email, '@')[0], LENGTH(SPLIT(email, '@')[0]), 1),
+      '@',
+      -- First char of domain
+      SUBSTRING(SPLIT(email, '@')[1], 1, 1),
+      REPEAT('*', GREATEST(LENGTH(SPLIT(email, '@')[1]) - 6, 1)),
+      -- Last 5 chars of domain (e.g., ".com")
+      SUBSTRING(SPLIT(email, '@')[1], -5)
+    )
+  END
+""")
 
 # COMMAND ----------
 
@@ -112,11 +113,12 @@ print(f"✓ Using schema: {schema_name}")
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC SELECT
-# MAGIC   mask_email('santa@northpole.com') AS masked_santa,
-# MAGIC   mask_email('emma.wilson@gmail.com') AS masked_emma,
-# MAGIC   mask_email('invalid-email') AS invalid_test;
+spark.sql("""
+SELECT
+  mask_email('santa@northpole.com') AS masked_santa,
+  mask_email('emma.wilson@gmail.com') AS masked_emma,
+  mask_email('invalid-email') AS invalid_test
+""").show()
 
 # COMMAND ----------
 
@@ -138,20 +140,21 @@ print(f"✓ Using schema: {schema_name}")
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC CREATE OR REPLACE FUNCTION mask_name(name STRING)
-# MAGIC RETURNS STRING
-# MAGIC COMMENT 'Masks personal names for privacy - shows first and last character only'
-# MAGIC RETURN
-# MAGIC   CASE
-# MAGIC     WHEN name IS NULL OR TRIM(name) = '' THEN NULL
-# MAGIC     WHEN LENGTH(TRIM(name)) <= 2 THEN REPEAT('*', LENGTH(TRIM(name)))
-# MAGIC     ELSE CONCAT(
-# MAGIC       SUBSTRING(TRIM(name), 1, 1),
-# MAGIC       REPEAT('*', LENGTH(TRIM(name)) - 2),
-# MAGIC       SUBSTRING(TRIM(name), -1)
-# MAGIC     )
-# MAGIC   END;
+spark.sql("""
+CREATE OR REPLACE FUNCTION mask_name(name STRING)
+RETURNS STRING
+COMMENT 'Masks personal names for privacy - shows first and last character only'
+RETURN
+  CASE
+    WHEN name IS NULL OR TRIM(name) = '' THEN NULL
+    WHEN LENGTH(TRIM(name)) <= 2 THEN REPEAT('*', LENGTH(TRIM(name)))
+    ELSE CONCAT(
+      SUBSTRING(TRIM(name), 1, 1),
+      REPEAT('*', LENGTH(TRIM(name)) - 2),
+      SUBSTRING(TRIM(name), -1)
+    )
+  END
+""")
 
 # COMMAND ----------
 
@@ -160,11 +163,12 @@ print(f"✓ Using schema: {schema_name}")
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC SELECT
-# MAGIC   mask_name('Emma') AS masked_emma,
-# MAGIC   mask_name('Alexander') AS masked_alexander,
-# MAGIC   mask_name('Jo') AS masked_short_name;
+spark.sql("""
+SELECT
+  mask_name('Emma') AS masked_emma,
+  mask_name('Alexander') AS masked_alexander,
+  mask_name('Jo') AS masked_short_name
+""").show()
 
 # COMMAND ----------
 
@@ -215,13 +219,11 @@ RETURN (
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC SELECT get_province_summary('Ontario') AS ontario_summary;
+spark.sql("SELECT get_province_summary('Ontario') AS ontario_summary").show(truncate=False)
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC SELECT get_province_summary('Quebec') AS quebec_summary;
+spark.sql("SELECT get_province_summary('Quebec') AS quebec_summary").show(truncate=False)
 
 # COMMAND ----------
 
@@ -272,13 +274,11 @@ RETURN
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC SELECT * FROM search_letters('bicycle');
+spark.sql("SELECT * FROM search_letters('bicycle')").show(truncate=False)
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC SELECT * FROM search_letters('lego');
+spark.sql("SELECT * FROM search_letters('lego')").show(truncate=False)
 
 # COMMAND ----------
 
@@ -287,7 +287,7 @@ RETURN
 
 # COMMAND ----------
 
-spark.sql(f"SHOW USER FUNCTIONS IN {schema_name}").display()
+spark.sql("SHOW USER FUNCTIONS").show(truncate=False)
 
 # COMMAND ----------
 
