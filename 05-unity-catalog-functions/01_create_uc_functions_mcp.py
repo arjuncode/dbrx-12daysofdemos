@@ -272,13 +272,11 @@ RETURN
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC SELECT * FROM TABLE(search_letters('bicycle'));
+spark.sql("SELECT * FROM TABLE(search_letters('bicycle'))").display()
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC SELECT * FROM TABLE(search_letters('lego'));
+spark.sql("SELECT * FROM TABLE(search_letters('lego'))").display()
 
 # COMMAND ----------
 
