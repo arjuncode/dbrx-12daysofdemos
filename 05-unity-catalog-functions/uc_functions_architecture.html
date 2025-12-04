@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unity Catalog Functions Architecture</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: #F9F7F4;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .architecture {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .source-section, .output-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .source-box, .output-box {
+            background-color: #EEEDE9;
+            border-radius: 8px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 160px;
+        }
+        .source-box .icon, .output-box .icon {
+            font-size: 28px;
+        }
+        .source-box .label, .output-box .label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #1B3139;
+        }
+        .source-box .sublabel, .output-box .sublabel {
+            font-size: 10px;
+            color: #666;
+        }
+        .arrow {
+            font-size: 24px;
+            color: #1B3139;
+            font-weight: bold;
+        }
+        .platform {
+            flex: 1;
+            background-color: #FF3621;
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .platform-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .platform-header .icons {
+            display: flex;
+            gap: 6px;
+            font-size: 20px;
+        }
+        .platform-header .title {
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+        }
+        .workflow-sections {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .workflow-section {
+            flex: 1;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .section-header {
+            background-color: #1B3139;
+            color: white;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-number {
+            background-color: #4DB8A8;
+            color: white;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .section-title {
+            font-size: 13px;
+            font-weight: 700;
+        }
+        .section-content {
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .component {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .component-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #F5F5F5;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        .component-text {
+            display: flex;
+            flex-direction: column;
+        }
+        .component-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #1B3139;
+        }
+        .component-sublabel {
+            font-size: 10px;
+            color: #666;
+        }
+        .foundation {
+            background-color: rgba(255,255,255,0.95);
+            border-radius: 8px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        .foundation-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .foundation-icon {
+            font-size: 18px;
+        }
+        .foundation-label {
+            font-size: 11px;
+            font-weight: 500;
+            color: #1B3139;
+        }
+        .section-arrow {
+            color: #FF3621;
+            font-size: 18px;
+            font-weight: bold;
+            align-self: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="architecture">
+            <!-- Data Sources -->
+            <div class="source-section">
+                <div class="source-box">
+                    <div class="icon">📬</div>
+                    <div>
+                        <div class="label">Santa's Letters</div>
+                        <div class="sublabel">Delta table with PII</div>
+                    </div>
+                </div>
+                <div class="source-box">
+                    <div class="icon">👶</div>
+                    <div>
+                        <div class="label">Child names</div>
+                        <div class="sublabel">Sensitive data</div>
+                    </div>
+                </div>
+                <div class="source-box">
+                    <div class="icon">🏠</div>
+                    <div>
+                        <div class="label">Locations</div>
+                        <div class="sublabel">City, province</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <!-- Data Intelligence Platform -->
+            <div class="platform">
+                <div class="platform-header">
+                    <div class="icons">🎄 🎅 ❄️</div>
+                    <div class="title">Data Intelligence Platform</div>
+                </div>
+
+                <div class="workflow-sections">
+                    <!-- Section 1: Scalar Functions -->
+                    <div class="workflow-section">
+                        <div class="section-header">
+                            <div class="section-number">1</div>
+                            <div class="section-title">Scalar functions</div>
+                        </div>
+                        <div class="section-content">
+                            <div class="component">
+                                <div class="component-icon">🎭</div>
+                                <div class="component-text">
+                                    <div class="component-label">mask_name()</div>
+                                    <div class="component-sublabel">PII anonymization</div>
+                                </div>
+                            </div>
+                            <div class="component">
+                                <div class="component-icon">🔒</div>
+                                <div class="component-text">
+                                    <div class="component-label">String masking</div>
+                                    <div class="component-sublabel">First/last char only</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-arrow">→</div>
+
+                    <!-- Section 2: Aggregate Functions -->
+                    <div class="workflow-section">
+                        <div class="section-header">
+                            <div class="section-number">2</div>
+                            <div class="section-title">Aggregate functions</div>
+                        </div>
+                        <div class="section-content">
+                            <div class="component">
+                                <div class="component-icon">🗺️</div>
+                                <div class="component-text">
+                                    <div class="component-label">get_province_summary()</div>
+                                    <div class="component-sublabel">JSON aggregates</div>
+                                </div>
+                            </div>
+                            <div class="component">
+                                <div class="component-icon">📊</div>
+                                <div class="component-text">
+                                    <div class="component-label">Governed stats</div>
+                                    <div class="component-sublabel">Pre-approved fields</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-arrow">→</div>
+
+                    <!-- Section 3: Table-Valued Functions -->
+                    <div class="workflow-section">
+                        <div class="section-header">
+                            <div class="section-number">3</div>
+                            <div class="section-title">Table-valued functions</div>
+                        </div>
+                        <div class="section-content">
+                            <div class="component">
+                                <div class="component-icon">🔍</div>
+                                <div class="component-text">
+                                    <div class="component-label">search_letters()</div>
+                                    <div class="component-sublabel">Safe keyword search</div>
+                                </div>
+                            </div>
+                            <div class="component">
+                                <div class="component-icon">✨</div>
+                                <div class="component-text">
+                                    <div class="component-label">Auto-masking</div>
+                                    <div class="component-sublabel">Built-in PII protection</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-arrow">→</div>
+
+                    <!-- Section 4: Governed Views -->
+                    <div class="workflow-section">
+                        <div class="section-header">
+                            <div class="section-number">4</div>
+                            <div class="section-title">Governed views</div>
+                        </div>
+                        <div class="section-content">
+                            <div class="component">
+                                <div class="component-icon">👁️</div>
+                                <div class="component-text">
+                                    <div class="component-label">letters_masked</div>
+                                    <div class="component-sublabel">Always-safe view</div>
+                                </div>
+                            </div>
+                            <div class="component">
+                                <div class="component-icon">📈</div>
+                                <div class="component-text">
+                                    <div class="component-label">Analytics ready</div>
+                                    <div class="component-sublabel">Share anywhere</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Foundation -->
+                <div class="foundation">
+                    <div class="foundation-item">
+                        <div class="foundation-icon">△</div>
+                        <div class="foundation-label">Delta Lake</div>
+                    </div>
+                    <div class="foundation-item">
+                        <div class="foundation-icon">⚡</div>
+                        <div class="foundation-label">Apache Spark™</div>
+                    </div>
+                    <div class="foundation-item">
+                        <div class="foundation-icon">🏛️</div>
+                        <div class="foundation-label">Unity Catalog</div>
+                    </div>
+                    <div class="foundation-item">
+                        <div class="foundation-icon">🔐</div>
+                        <div class="foundation-label">Row/Column Security</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <!-- Outputs -->
+            <div class="output-section">
+                <div class="output-box">
+                    <div class="icon">🛡️</div>
+                    <div>
+                        <div class="label">Masked data</div>
+                        <div class="sublabel">PII protected</div>
+                    </div>
+                </div>
+                <div class="output-box">
+                    <div class="icon">📊</div>
+                    <div>
+                        <div class="label">Safe analytics</div>
+                        <div class="sublabel">Governed queries</div>
+                    </div>
+                </div>
+                <div class="output-box">
+                    <div class="icon">🔍</div>
+                    <div>
+                        <div class="label">Search results</div>
+                        <div class="sublabel">Auto-anonymized</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
