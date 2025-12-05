@@ -5,8 +5,6 @@ from psycopg import sql
 from psycopg_pool import ConnectionPool
 from databricks import sdk
 
-table_name = "public.gift_requests_synced_table"
-
 # Global connection pool
 connection_pool = None
 postgres_password = None
@@ -43,7 +41,7 @@ def fetch_data():
         pool = _get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                cur.execute(f"SELECT * FROM {table_name}")
+                cur.execute("SELECT * FROM public.gift_requests_synced_table")
                 rows = cur.fetchall()
                 if cur.description:
                     cols = [desc[0] for desc in cur.description]
@@ -63,7 +61,7 @@ def update_db_record(request_id, column, value):
     if column in ['en_route', 'delivered']: value = bool(value)
     if column == 'cookies': value = int(value) if value is not None else 0
     
-    query = sql.SQL(f"UPDATE {table_name} SET {sql.Identifier(column)} = %s WHERE request_id = %s")
+    query = sql.SQL("UPDATE public.gift_requests_synced_table SET {} = %s WHERE request_id = %s").format(sql.Identifier(column))
     
     try:
         pool = _get_pool()
