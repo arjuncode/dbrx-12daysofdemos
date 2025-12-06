@@ -42,7 +42,7 @@ Starting **December 8th, 2025**, we will release a hands-on demo highlighting a 
 If you are new to Databricks, this series is the perfect place to start. If you are an experienced user, you will see how the latest features tie together into a unified Lakehouse.
 
 1. **Get Ready:** Ensure you have a workspace ready to use. If this is your first time using Databricks, consider a quick, [serverless workspace](https://docs.databricks.com/aws/en/admin/workspace/serverless-workspaces).
-2. **Stay Updated:** Follow this repo and our LinkedIn page for demo drops.
+2. **Stay Updated:** Follow this repo, [our blog](https://medium.com/startups-at-databricks) (where the demo walkthroughs will drop) and [our LinkedIn page](https://www.linkedin.com/company/databricks-for-startups/posts/?feedView=all) for updates.
 3. **Get Support:** Reach out to your Databricks account team ahead of the demos for the best support.
 
-**We can’t wait to go on this holiday journey together!** ❄️
+**We can’t wait to go on this holiday journey together!**
