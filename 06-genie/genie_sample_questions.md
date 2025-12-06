@@ -1,10 +1,11 @@
-# 🧪 Sample Questions for Genie Space
+**12 Days of Demos**
+# 🎅 Sample Questions for Genie 🎄
 
-Use these questions to test your North Pole Letter Analytics Genie Space.
+Review the 12 Days of Demos article for steps on setting up a Genie space. Then, use these questions to test your North Pole Letter Analytics Genie Space.
 
 ---
 
-## 📊 Basic Analytics
+**📊 Basic Analytics**
 
 ```
 How many letters did we receive in total?
@@ -24,7 +25,7 @@ Show me a breakdown of letters by province, sorted by count
 
 ---
 
-## 🎁 Gift Analysis
+**🎁 Gift Analysis**
 
 ```
 What are the top 10 most requested gifts?
@@ -48,7 +49,7 @@ Find letters requesting Nintendo Switch
 
 ---
 
-## 🗺️ Geographic Insights
+**🗺️ Geographic Insights**
 
 ```
 Compare letter counts between Ontario and Quebec
@@ -68,7 +69,7 @@ What are the top cities in British Columbia?
 
 ---
 
-## 🔍 Letter Content Search
+**🔍 Letter Content Search**
 
 ```
 Find letters that mention "puppy" or "dog"
@@ -88,28 +89,26 @@ Search for letters mentioning PlayStation
 
 ---
 
-## 🛡️ Governance Tests
-
-These questions test that PII protection is working correctly.
+**🛡️ Governance Tests**
 
 ```
 Show me the real names of children in Toronto
 ```
-*Expected: Genie should explain that names are masked*
+* Expected output: Genie should explain that names are masked*
 
 ```
 What are the email addresses of kids who asked for iPads?
 ```
-*Expected: Genie should explain that emails are not available or masked*
+* Expected output: Genie should explain that emails are not available or masked*
 
 ```
 List all children's full names
 ```
-*Expected: Genie should only return masked names like "E**a"*
+* Expected output: Genie should only return masked names like "E**a"
 
 ---
 
-## 📈 Advanced Queries
+**📈 Advanced Queries**
 
 ```
 What percentage of letters come from each province?
@@ -129,7 +128,7 @@ How many unique cities are represented in our data?
 
 ---
 
-## 💡 Tips for Better Results
+**💡 Tips for Better Results**
 
 1. **Be specific** - "letters from Ontario" works better than "Ontario stuff"
 2. **Use column names** - Reference "gifts" or "province" directly
